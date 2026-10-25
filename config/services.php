@@ -35,4 +35,20 @@ return [
         ],
     ],
 
+
+        'slack' => [
+        'notifications' => [
+            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        ],
+    ],
+
+    'wompi' => [
+        'client_id' => env('WOMPI_CLIENT_ID'),
+        'client_secret' => env('WOMPI_CLIENT_SECRET'),
+        'token_url' => env('WOMPI_TOKEN_URL', 'https://id.wompi.sv/connect/token'),
+        'api_url' => env('WOMPI_API_URL', 'https://api.wompi.sv'),
+        'demo_mode' => env('WOMPI_DEMO_MODE', true),
+    ],
+
 ];
