@@ -34,7 +34,7 @@ class WompiService
         if ($this->hasPublicAppUrl()) {
             $configuration += [
                 'urlRedirect' => route('payment.result', $order),
-                'urlRetorno' => route('checkout.create'),
+                'urlRetorno' => route('cart.index'),
                 'urlWebhook' => route('wompi.webhook'),
             ];
         }
@@ -62,6 +62,27 @@ class WompiService
 
         return $response;
     }
+
+
+    public function getTransaction(string $transactionId): array
+    {
+        if (! $this->configured()) {
+            throw new RuntimeException('Wompi no está configurado.');
+        }
+
+        return Http::acceptJson()
+            ->withToken($this->accessToken())
+            ->timeout(20)
+            ->retry(2, 300)
+            ->get(
+                rtrim(config('services.wompi.api_url'), '/')
+                . '/TransaccionCompra/'
+                . rawurlencode($transactionId)
+            )
+            ->throw()
+            ->json();
+    }
+
 
     public function validWebhook(string $body, ?string $signature): bool
     {
